@@ -1,0 +1,13 @@
+{
+  "name": "lorcana-tcg-pocket",
+  "version": "0.0.1",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:api": "npm run start:dev --workspace=api",
+    "dev:mobile": "npm run start --workspace=mobile"
+  }
+}

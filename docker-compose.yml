@@ -1,0 +1,39 @@
+services:
+  mysql:
+    image: mysql:8.0
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: lorcana_tcg_pocket
+      MYSQL_USER: lorcana
+      MYSQL_PASSWORD: lorcana
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  adminer:
+    image: adminer
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+
+  api:
+    build:
+      context: ./apps/api
+      dockerfile: Dockerfile.dev
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: mysql://lorcana:lorcana@mysql:3306/lorcana_tcg_pocket
+    volumes:
+      - ./apps/api:/app
+      - /app/node_modules
+    depends_on:
+      - mysql
+
+volumes:
+  mysql_data:
